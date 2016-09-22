@@ -66,6 +66,7 @@ GetKeyState, JoyInfo, %JoystickNumber%JoyInfo
 IfInString, JoyInfo, P  ; Joystick has POV control, so use it as a mouse wheel.
 	SetTimer, MouseWheel, %WheelDelay%
 
+
 return  ; End of auto-execute section.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -190,4 +191,8 @@ if (JoyPOV > 31500 or JoyPOV < 4500)  ; Forward
 	Send {WheelUp}
 else if JoyPOV between 13500 and 22500  ; Back
 	Send {WheelDown}
+else if JoyPOV between 4501 and 13500 ; Right
+    Send {T}{Click right}
+else ; Left
+    Send {I}
 return
