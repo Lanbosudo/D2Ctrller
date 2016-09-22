@@ -240,3 +240,15 @@ WatchLeftJoystick:
   }
 
   Return
+
+1Joy1::1
+1Joy2::2
+1Joy3::3
+1Joy4::4
+1Joy10::Esc
+1Joy9::
+  Send {Alt down}
+  Sleep, 5000
+  Send {Alt up}
+  Return
+1Joy11::Tab
