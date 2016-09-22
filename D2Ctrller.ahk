@@ -66,6 +66,7 @@ GetKeyState, JoyInfo, %JoystickNumber%JoyInfo
 IfInString, JoyInfo, P  ; Joystick has POV control, so use it as a mouse wheel.
 	SetTimer, MouseWheel, %WheelDelay%
 
+SetTimer, WatchLeftJoystick, 10 ; Monitor left wheel
 
 return  ; End of auto-execute section.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -196,3 +197,46 @@ else if JoyPOV between 4501 and 13500 ; Right
 else ; Left
     Send {I}
 return
+
+; WASD movement with left wheel
+
+
+; monitor function
+WatchLeftJoystick:
+
+  WinGetPos,,, total_width, total_height, A ; In case of running a Window, or in a resolution not matching the Desktop's.
+  x_axis_centre := round(total_width//2)
+  y_axis_centre := round(total_height*0.51) ; This is corrected for true horizontal movement.
+
+  unit_x := round(total_width*0.045)
+  unit_y := round(total_height*0.06)
+
+
+
+  SetFormat, float, 03
+  GetKeyState, joyx, %JoystickNumber%JoyX
+  GetKeyState, joyy, %JoystickNumber%JoyY
+
+  if joyx > %JoyThresholdUpper%
+    DeltaX := 1
+  else if joyx < %JoyThresholdLower%
+    DeltaX := -1
+  Else
+    DeltaX = 0
+
+  if joyy > %JoyThresholdUpper%
+    DeltaY := 1
+  else if joyy < %JoyThresholdLower%
+    DeltaY := -1
+  Else
+    DeltaY = 0
+  if not (DeltaX = 0 and DeltaY = 0)
+  {
+    MouseGetPos, prior_x_pos, prior_y_pos
+    x_axis := x_axis_centre + DeltaX*unit_x
+    y_axis := y_axis_centre + DeltaY*unit_y
+    Click down %x_axis% %y_axis%
+    Click up
+  }
+
+  Return
