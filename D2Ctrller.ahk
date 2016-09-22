@@ -22,8 +22,7 @@ InvertYAxis := false
 ; the left, right, and middle mouse buttons.  Available numbers are 1 through 32.
 ; Use the Joystick Test Script to find out your joystick's numbers more easily.
 ButtonLeft = 6
-ButtonRight = 5
-ButtonMiddle = 8
+ButtonRight = 8
 
 ; If your joystick has a POV control, you can use it as a mouse wheel.  The
 ; following value is the number of milliseconds between turns of the wheel.
@@ -34,15 +33,24 @@ WheelDelay = 250
 ; other than the first:
 JoystickNumber = 1
 
+; Control Shift
+ButtonControl = 1Joy7
+ButtonShift = 1Joy5
+
 ; END OF CONFIG SECTION -- Don't change anything below this point unless you want
 ; to alter the basic nature of the script.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 #SingleInstance
+
 
 JoystickPrefix = %JoystickNumber%Joy
 Hotkey, %JoystickPrefix%%ButtonLeft%, ButtonLeft
 Hotkey, %JoystickPrefix%%ButtonRight%, ButtonRight
-Hotkey, %JoystickPrefix%%ButtonMiddle%, ButtonMiddle
+
+Hotkey, %ButtonControl%, ButtonControl
+Hotkey, %ButtonShift%, ButtonShift
 
 ; Calculate the axis displacements that are needed to start moving the cursor:
 JoyThresholdUpper := 50 + JoyThreshold
@@ -59,6 +67,7 @@ IfInString, JoyInfo, P  ; Joystick has POV control, so use it as a mouse wheel.
 	SetTimer, MouseWheel, %WheelDelay%
 
 return  ; End of auto-execute section.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ; The subroutines below do not use KeyWait because that would sometimes trap the
@@ -107,6 +116,35 @@ if GetKeyState(JoystickPrefix . ButtonMiddle)
 SetTimer, WaitForMiddleButtonUp, off
 MouseClick, middle,,, 1, 0, U  ; Release the mouse button.
 return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ButtonControl:
+
+Send {Control Down}
+SetTimer, WaitForControlUp, 10
+return
+
+WaitForControlUp:
+  if GetKeyState(ButtonControl)
+    Return  ; The button is still, down, so keep waiting.
+; Otherwise, the button has been released.
+  SetTimer, WaitForControlUp, off
+  Send {Control Up}
+return
+
+ButtonShift:
+  Send {Shift Down}
+  SetTimer, WaitForShiftUp, 10
+  Return
+
+WaitForShiftUp:
+  if GetKeyState(ButtonShift)
+    Return  ; The button is still, down, so keep waiting.
+; Otherwise, the button has been released.
+  SetTimer, WaitForShiftUp, Off
+  Send {Shift Up}
+  Return
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 WatchJoystick:
 MouseNeedsToBeMoved := false  ; Set default.
