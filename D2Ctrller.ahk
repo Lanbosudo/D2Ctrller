@@ -77,12 +77,22 @@ return  ; End of auto-execute section.
 ; effectively prevent mouse-dragging with the joystick.
 
 ButtonLeft:
+
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
 SetTimer, WaitForLeftButtonUp, 10
 return
 
 ButtonRight:
+
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, right,,, 1, 0, D  ; Hold down the right mouse button.
 SetTimer, WaitForRightButtonUp, 10
@@ -122,6 +132,10 @@ return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ButtonControl:
 
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+
 Send {Control Down}
 SetTimer, WaitForControlUp, 10
 return
@@ -135,6 +149,11 @@ WaitForControlUp:
 return
 
 ButtonShift:
+
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+
   Send {Shift Down}
   SetTimer, WaitForShiftUp, 10
   Return
@@ -245,10 +264,34 @@ WatchLeftJoystick:
 
   Return
 
-1Joy1::1
-1Joy2::2
-1Joy3::3
-1Joy4::4
+1Joy1::
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+Send {1}
+Return
+
+1Joy2::
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+Send {2}
+Return
+
+1Joy3::
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+Send {3}
+Return
+
+1Joy4::
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+Send {4}
+Return
+
 1Joy10::Esc
 1Joy9::
   Send {Alt down}
