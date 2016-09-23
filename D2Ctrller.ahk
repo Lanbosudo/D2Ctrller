@@ -19,7 +19,7 @@ JoyThreshold = 3
 InvertYAxis := false
 
 ; Change these values to use joystick button numbers other than 1, 2, and 3 for
-; the left, right, and middle mouse buttons.  Available numbers are 1 through 32.
+; the left, right mouse buttons.  Available numbers are 1 through 32.
 ; Use the Joystick Test Script to find out your joystick's numbers more easily.
 ButtonLeft = 6
 ButtonRight = 8
@@ -98,12 +98,6 @@ MouseClick, right,,, 1, 0, D  ; Hold down the right mouse button.
 SetTimer, WaitForRightButtonUp, 10
 return
 
-ButtonMiddle:
-SetMouseDelay, -1  ; Makes movement smoother.
-MouseClick, middle,,, 1, 0, D  ; Hold down the right mouse button.
-SetTimer, WaitForMiddleButtonUp, 10
-return
-
 WaitForLeftButtonUp:
 if GetKeyState(JoystickPrefix . ButtonLeft)
 	return  ; The button is still, down, so keep waiting.
@@ -119,14 +113,6 @@ if GetKeyState(JoystickPrefix . ButtonRight)
 ; Otherwise, the button has been released.
 SetTimer, WaitForRightButtonUp, off
 MouseClick, right,,, 1, 0, U  ; Release the mouse button.
-return
-
-WaitForMiddleButtonUp:
-if GetKeyState(JoystickPrefix . ButtonMiddle)
-	return  ; The button is still, down, so keep waiting.
-; Otherwise, the button has been released.
-SetTimer, WaitForMiddleButtonUp, off
-MouseClick, middle,,, 1, 0, U  ; Release the mouse button.
 return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
