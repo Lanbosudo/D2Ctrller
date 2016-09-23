@@ -203,8 +203,13 @@ return
 
 ; monitor function
 WatchLeftJoystick:
+  
+  WinGetTitle, title, A
+  if not (title = "Diablo II")
+    Return
 
   WinGetPos,,, total_width, total_height, A ; In case of running a Window, or in a resolution not matching the Desktop's.
+
   x_axis_centre := round(total_width//2)
   y_axis_centre := round(total_height*0.51) ; This is corrected for true horizontal movement.
 
@@ -232,7 +237,6 @@ WatchLeftJoystick:
     DeltaY = 0
   if not (DeltaX = 0 and DeltaY = 0)
   {
-    MouseGetPos, prior_x_pos, prior_y_pos
     x_axis := x_axis_centre + DeltaX*unit_x
     y_axis := y_axis_centre + DeltaY*unit_y
     Click down %x_axis% %y_axis%
