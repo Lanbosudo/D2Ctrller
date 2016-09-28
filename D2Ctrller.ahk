@@ -198,7 +198,16 @@ if (JoyPOV > 31500 or JoyPOV < 4500)  ; Forward
 else if JoyPOV between 13500 and 22500  ; Back
 	Send {WheelDown}
 else if JoyPOV between 4501 and 13500 ; Right
+{
     Send {T}{Click right}
+    WinGetPos,,, total_width, total_height, A
+    x_axis := round(total_width*0.48)
+    y_axis := round(total_height*0.44)
+    Click down %x_axis% %y_axis%  ; move cursor on the portal
+    Click up
+    Sleep, 1000
+    Click
+    }
 else ; Left
     Send {I}
 return
@@ -211,12 +220,12 @@ WatchLeftJoystick:
   
   WinGetTitle, title, A
   if not (title = "Diablo II")
-    Return
+  Return
 
   WinGetPos,,, total_width, total_height, A ; In case of running a Window, or in a resolution not matching the Desktop's.
 
   x_axis_centre := round(total_width//2)
-  y_axis_centre := round(total_height*0.51) ; This is corrected for true horizontal movement.
+  y_axis_centre := round(total_height*0.5) ; This is corrected for true horizontal movement.
 
   unit_x := round(total_width*0.045)
   unit_y := round(total_height*0.06)
