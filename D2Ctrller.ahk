@@ -37,6 +37,8 @@ JoystickNumber = 1
 ButtonControl = 1Joy7
 ButtonShift = 1Joy5
 
+AltFlag = 0
+
 ; END OF CONFIG SECTION -- Don't change anything below this point unless you want
 ; to alter the basic nature of the script.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -259,6 +261,8 @@ WatchLeftJoystick:
 
   Return
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; potion
 1Joy1::
 WinGetTitle, title, A
 if (title = "Steam")
@@ -287,10 +291,36 @@ Return
 Send {4}
 Return
 
-1Joy10::Esc
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; function keys
+
+1Joy10::
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+Send {Esc}
+Return
+
 1Joy9::
-  Send {Alt down}
-  Sleep, 5000
-  Send {Alt up}
+
+  WinGetTitle, title, A
+  if (title = "Steam")
+    Return
+
+  if (AltFlag = 0) {
+    Send {Alt down}
+    AltFlag := 1
+    }
+  else {
+    Send {Alt up}
+    AltFlag := 0
+    }
+
   Return
-1Joy11::Tab
+
+1Joy11::
+WinGetTitle, title, A
+if (title = "Steam")
+Return
+Send {Tab}
+Return
