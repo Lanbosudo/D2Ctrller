@@ -80,9 +80,9 @@ return  ; End of auto-execute section.
 
 ButtonLeft:
 
-WinGetTitle, title, A
-if (title = "Steam")
-Return
+;WinGetTitle, title, A
+;if (title = "Steam")
+;Return
 
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
@@ -91,9 +91,9 @@ return
 
 ButtonRight:
 
-WinGetTitle, title, A
-if (title = "Steam")
-Return
+;WinGetTitle, title, A
+;if (title = "Steam")
+;Return
 
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, right,,, 1, 0, D  ; Hold down the right mouse button.
