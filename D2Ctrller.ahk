@@ -157,30 +157,35 @@ WaitForShiftUp:
 
 WatchJoystick:
 MouseNeedsToBeMoved := false  ; Set default.
+
+;Set MouseMoveSpeed a y=x^n function
+;Ratio is the maxSpeed/originalScriptSpeed
+Ratio := 3
+
 SetFormat, float, 03
 GetKeyState, joyx, %JoystickNumber%JoyZ
 GetKeyState, joyy, %JoystickNumber%JoyR
 if joyx > %JoyThresholdUpper%
 {
 	MouseNeedsToBeMoved := true
-	DeltaX := joyx - JoyThresholdUpper
+	DeltaX := Ratio*50*((joyx-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
 }
 else if joyx < %JoyThresholdLower%
 {
 	MouseNeedsToBeMoved := true
-	DeltaX := joyx - JoyThresholdLower
+	DeltaX := Ratio*50*((joyx-JoyThresholdLower)/(JoyThresholdLower))**9
 }
 else
 	DeltaX = 0
 if joyy > %JoyThresholdUpper%
 {
 	MouseNeedsToBeMoved := true
-	DeltaY := joyy - JoyThresholdUpper
+	DeltaY := Ratio*50*((joyy-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
 }
 else if joyy < %JoyThresholdLower%
 {
 	MouseNeedsToBeMoved := true
-	DeltaY := joyy - JoyThresholdLower
+	DeltaY := Ratio*50*((joyy-JoyThresholdLower)/(JoyThresholdLower))**9
 }
 else
 	DeltaY = 0
