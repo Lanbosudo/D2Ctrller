@@ -210,9 +210,8 @@ else if JoyPOV between 4501 and 13500 ; Right
     WinGetPos,,, total_width, total_height, A
     x_axis := round(total_width*0.48)
     y_axis := round(total_height*0.44)
-    Click down %x_axis% %y_axis%  ; move cursor on the portal
-    Click up
-    Sleep, 1000
+    MouseMove, %x_axis%, %y_axis%  ; move cursor on the portal
+    Sleep, 1200
     Click
     }
 else ; Left
