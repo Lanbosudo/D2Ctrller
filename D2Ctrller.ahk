@@ -6,7 +6,7 @@
 ; from center. You can personalize various settings at the top of the script.
 
 ; Increase the following value to make the mouse cursor move faster:
-JoyMultiplier = 0.30
+JoyMultiplier = 45
 
 ; Decrease the following value to require less joystick displacement-from-center
 ; to start moving the mouse.  However, you may need to calibrate your joystick
@@ -159,40 +159,38 @@ WatchJoystick:
 MouseNeedsToBeMoved := false  ; Set default.
 
 ;Set MouseMoveSpeed a y=x^n function
-;Ratio is the maxSpeed/originalScriptSpeed
-Ratio := 3
 
-SetFormat, float, 03
+SetFormat, float, 0.20
 GetKeyState, joyx, %JoystickNumber%JoyZ
 GetKeyState, joyy, %JoystickNumber%JoyR
 if joyx > %JoyThresholdUpper%
 {
 	MouseNeedsToBeMoved := true
-	DeltaX := Ratio*50*((joyx-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
+	DeltaX := 1/6 + 5/6*((joyx-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
 }
 else if joyx < %JoyThresholdLower%
 {
 	MouseNeedsToBeMoved := true
-	DeltaX := Ratio*50*((joyx-JoyThresholdLower)/(JoyThresholdLower))**9
+	DeltaX := -1/6 + 5/6*((joyx-JoyThresholdLower)/(JoyThresholdLower))**9
 }
 else
 	DeltaX = 0
 if joyy > %JoyThresholdUpper%
 {
 	MouseNeedsToBeMoved := true
-	DeltaY := Ratio*50*((joyy-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
+	DeltaY := 1/6 + 5/6*((joyy-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
 }
 else if joyy < %JoyThresholdLower%
 {
 	MouseNeedsToBeMoved := true
-	DeltaY := Ratio*50*((joyy-JoyThresholdLower)/(JoyThresholdLower))**9
+	DeltaY := -1/6 + 5/6*((joyy-JoyThresholdLower)/(JoyThresholdLower))**9
 }
 else
 	DeltaY = 0
 if MouseNeedsToBeMoved
 {
 	SetMouseDelay, -1  ; Makes movement smoother.
-	MouseMove, DeltaX * JoyMultiplier, DeltaY * JoyMultiplier * YAxisMultiplier, 0, R
+	MouseMove, DeltaX * JoyMultiplier, DeltaY * YAxisMultiplier * JoyMultiplier, 0, R
 }
 return
 
