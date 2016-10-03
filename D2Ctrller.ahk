@@ -159,6 +159,7 @@ WatchJoystick:
 MouseNeedsToBeMoved := false  ; Set default.
 
 ;Set MouseMoveSpeed a y=x^n function
+initialLevel := 1/9
 
 SetFormat, float, 0.20
 GetKeyState, joyx, %JoystickNumber%JoyZ
@@ -166,24 +167,24 @@ GetKeyState, joyy, %JoystickNumber%JoyR
 if joyx > %JoyThresholdUpper%
 {
 	MouseNeedsToBeMoved := true
-	DeltaX := 1/6 + 5/6*((joyx-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
+	DeltaX := initialLevel + (1-initialLevel)*((joyx-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
 }
 else if joyx < %JoyThresholdLower%
 {
 	MouseNeedsToBeMoved := true
-	DeltaX := -1/6 + 5/6*((joyx-JoyThresholdLower)/(JoyThresholdLower))**9
+	DeltaX := -initialLevel + (1-initialLevel)*((joyx-JoyThresholdLower)/(JoyThresholdLower))**9
 }
 else
 	DeltaX = 0
 if joyy > %JoyThresholdUpper%
 {
 	MouseNeedsToBeMoved := true
-	DeltaY := 1/6 + 5/6*((joyy-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
+	DeltaY := initialLevel + (1-initialLevel)*((joyy-JoyThresholdUpper)/(100-JoyThresholdUpper))**9
 }
 else if joyy < %JoyThresholdLower%
 {
 	MouseNeedsToBeMoved := true
-	DeltaY := -1/6 + 5/6*((joyy-JoyThresholdLower)/(JoyThresholdLower))**9
+	DeltaY := -initialLevel + (1-initialLevel)*((joyy-JoyThresholdLower)/(JoyThresholdLower))**9
 }
 else
 	DeltaY = 0
