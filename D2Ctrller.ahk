@@ -78,11 +78,16 @@ return  ; End of auto-execute section.
 ; WatchJoystick quasi-thread beneath the wait-for-button-up thread, which would
 ; effectively prevent mouse-dragging with the joystick.
 
-ButtonLeft:
+^!s::
+Suspend, Permit
+	
+Pause, Toggle, 1
+	
+Suspend, Toggle
 
-;WinGetTitle, title, A
-;if (title = "Steam")
-;Return
+Return
+
+ButtonLeft:
 
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
@@ -90,10 +95,6 @@ SetTimer, WaitForLeftButtonUp, 10
 return
 
 ButtonRight:
-
-;WinGetTitle, title, A
-;if (title = "Steam")
-;Return
 
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, right,,, 1, 0, D  ; Hold down the right mouse button.
@@ -120,10 +121,6 @@ return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ButtonControl:
 
-WinGetTitle, title, A
-if (title = "Steam")
-Return
-
 Send {Control Down}
 SetTimer, WaitForControlUp, 10
 return
@@ -137,10 +134,6 @@ WaitForControlUp:
 return
 
 ButtonShift:
-
-WinGetTitle, title, A
-if (title = "Steam")
-Return
 
   Send {Shift Down}
   SetTimer, WaitForShiftUp, 10
@@ -268,28 +261,28 @@ WatchLeftJoystick:
 ; potion
 1Joy1::
 WinGetTitle, title, A
-if (title = "Steam")
+if not (title = "Diablo II")
 Return
 Send {1}
 Return
 
 1Joy2::
 WinGetTitle, title, A
-if (title = "Steam")
+if not (title = "Diablo II")
 Return
 Send {2}
 Return
 
 1Joy3::
 WinGetTitle, title, A
-if (title = "Steam")
+if not (title = "Diablo II")
 Return
 Send {3}
 Return
 
 1Joy4::
 WinGetTitle, title, A
-if (title = "Steam")
+if not (title = "Diablo II")
 Return
 Send {4}
 Return
@@ -298,17 +291,11 @@ Return
 ; function keys
 
 1Joy10::
-WinGetTitle, title, A
-if (title = "Steam")
-Return
+
 Send {Esc}
 Return
 
 1Joy9::
-
-  WinGetTitle, title, A
-  if (title = "Steam")
-    Return
 
   if (AltFlag = 0) {
     Send {Alt down}
@@ -322,8 +309,6 @@ Return
   Return
 
 1Joy11::
-WinGetTitle, title, A
-if (title = "Steam")
-Return
+
 Send {Tab}
 Return
