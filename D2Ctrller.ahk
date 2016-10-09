@@ -80,14 +80,27 @@ return  ; End of auto-execute section.
 
 ^!s::
 Suspend, Permit
-	
 Pause, Toggle, 1
-	
 Suspend, Toggle
-
 Return
 
+CheckWindow()
+{
+  WinGetTitle, title, A
+  if (title = "Diablo II")
+    WindowFlag = 1 ; Diablo Mode
+  else if (title = "Steam" or title = "Shin Sangokumusou 3" or title = "NFS11" or title = "Borderlands")
+    WindowFlag = 2 ; Steam Big Picture Mode / Game controller mode
+  else
+    WindowFlag = 0 ; Desktop Mode
+  Return WindowFlag
+}
+
 ButtonLeft:
+
+  window := CheckWindow()
+  if (window = 2)
+  Return
 
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
@@ -95,6 +108,10 @@ SetTimer, WaitForLeftButtonUp, 10
 return
 
 ButtonRight:
+
+  window := CheckWindow()
+  if (window = 2)
+  Return
 
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, right,,, 1, 0, D  ; Hold down the right mouse button.
@@ -121,6 +138,10 @@ return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ButtonControl:
 
+  window := CheckWindow()
+  if (window = 2)
+  Return
+
 Send {Control Down}
 SetTimer, WaitForControlUp, 10
 return
@@ -134,6 +155,10 @@ WaitForControlUp:
 return
 
 ButtonShift:
+
+  window := CheckWindow()
+  if (window = 2)
+  Return
 
   Send {Shift Down}
   SetTimer, WaitForShiftUp, 10
@@ -149,6 +174,11 @@ WaitForShiftUp:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 WatchJoystick:
+
+  window := CheckWindow()
+  if (window = 2)
+  Return
+
 MouseNeedsToBeMoved := false  ; Set default.
 
 ;Set MouseMoveSpeed a y=x^n function
@@ -188,7 +218,14 @@ if MouseNeedsToBeMoved
 }
 return
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 MouseWheel:
+
+  window := CheckWindow()
+  if (window = 2)
+  Return
+
 GetKeyState, JoyPOV, %JoystickNumber%JoyPOV
 if JoyPOV = -1  ; No angle.
 	return
@@ -198,26 +235,38 @@ else if JoyPOV between 13500 and 22500  ; Back
 	Send {WheelDown}
 else if JoyPOV between 4501 and 13500 ; Right
 {
-    Send {T}{Click right}
-    WinGetPos,,, total_width, total_height, A
-    x_axis := round(total_width*0.48)
-    y_axis := round(total_height*0.44)
-    MouseMove, %x_axis%, %y_axis%  ; move cursor on the portal
-    Sleep, 1200
-    Click
-    }
-else ; Left
-    Send {I}
-return
 
+  window := CheckWindow()
+  if not (window = 1)
+  Return
+
+  Send {T}{Click right}
+  WinGetPos,,, total_width, total_height, A
+  x_axis := round(total_width*0.48)
+  y_axis := round(total_height*0.44)
+  MouseMove, %x_axis%, %y_axis%  ; move cursor on the portal
+  Sleep, 1200
+  Click
+}
+else ; Left
+{
+  window := CheckWindow()
+  if not (window = 1)
+  Return
+
+  Send {I}
+}
+  Return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; WASD movement with left wheel
 
 
 ; monitor function
 WatchLeftJoystick:
   
-  WinGetTitle, title, A
-  if not (title = "Diablo II")
+  window := CheckWindow()
+  if not (window = 1)
   Return
 
   WinGetPos,,, total_width, total_height, A ; In case of running a Window, or in a resolution not matching the Desktop's.
@@ -260,30 +309,38 @@ WatchLeftJoystick:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; potion
 1Joy1::
-WinGetTitle, title, A
-if not (title = "Diablo II")
-Return
+
+  window := CheckWindow()
+  if not (window = 1)
+  Return
+
 Send {1}
 Return
 
 1Joy2::
-WinGetTitle, title, A
-if not (title = "Diablo II")
-Return
+
+  window := CheckWindow()
+  if not (window = 1)
+  Return
+
 Send {2}
 Return
 
 1Joy3::
-WinGetTitle, title, A
-if not (title = "Diablo II")
-Return
+
+  window := CheckWindow()
+  if not (window = 1)
+  Return
+
 Send {3}
 Return
 
 1Joy4::
-WinGetTitle, title, A
-if not (title = "Diablo II")
-Return
+
+  window := CheckWindow()
+  if not (window = 1)
+  Return
+
 Send {4}
 Return
 
@@ -292,23 +349,45 @@ Return
 
 1Joy10::
 
-Send {Esc}
-Return
+  window := CheckWindow()
+  if (window = 2)
+  Return
+
+  Send {Esc}
+  Return
 
 1Joy9::
 
-  if (AltFlag = 0) {
-    Send {Alt down}
-    AltFlag := 1
+  window := CheckWindow()
+  if (window = 2)
+    Return
+  else if (window = 0) ; Desktop Mode, next window
+  {
+    Send {Alt Down}
+    Sleep, 500
+    Send {Tab}
+    Send {Alt Up}
+  }
+  else if (window = 1)
+  {
+
+    if (AltFlag = 0) {
+      Send {Alt down}
+      AltFlag := 1
     }
-  else {
-    Send {Alt up}
-    AltFlag := 0
+    else {
+      Send {Alt up}
+      AltFlag := 0
     }
+  }
 
   Return
 
 1Joy11::
 
-Send {Tab}
-Return
+  window := CheckWindow()
+  if (window = 2)
+    Return
+
+  Send {Tab}
+  Return
