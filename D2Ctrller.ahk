@@ -391,7 +391,7 @@ Return
   else if (window = 0) ; Desktop Mode, next window
   {
     Send {Alt Down}
-    Sleep, 500
+    Sleep, 100
     Send {Tab}
     Send {Alt Up}
   }
