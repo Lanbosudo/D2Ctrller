@@ -100,12 +100,39 @@ ButtonLeft:
 
   window := CheckWindow()
   if (window = 2)
-  Return
+  {
+    SetTimer, WaitForEscapePair, 10
+    Return
+  }
 
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
 SetTimer, WaitForLeftButtonUp, 10
 return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; "Escape" function for games
+WaitForEscapePair:
+  if not GetKeyState(JoystickPrefix . ButtonLeft)
+  {
+    SetTimer, WaitForEscapePair, Off
+    Return
+  }
+  
+  if GetKeyState(JoystickPrefix . ButtonRight)
+  {
+    Send {LWin Down}
+    Send {LCtrl Down}
+    Sleep, 100
+    Send {Left}
+    Send {LWin Up}
+    Send {LCtrl Up}
+
+;    SetTimer, WaitForEscapePair, Off
+  }
+
+  Return
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ButtonRight:
 
