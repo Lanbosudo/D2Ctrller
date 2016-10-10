@@ -86,10 +86,10 @@ Return
 
 CheckWindow()
 {
-  WinGetTitle, title, A
-  if (title = "Diablo II")
+  WinGet, processName, ProcessName, A
+  if (InStr(processName, "Diablo II"))
     WindowFlag = 1 ; Diablo Mode
-  else if (title = "Steam" or title = "Shin Sangokumusou 3" or title = "NFS11" or title = "Borderlands")
+  else if (InStr(processName, "Steam") or InStr(processName, "Shin") or InStr(processName, "NFS") or InStr(processName, "Borderlands"))
     WindowFlag = 2 ; Steam Big Picture Mode / Game controller mode
   else
     WindowFlag = 0 ; Desktop Mode
