@@ -39,6 +39,10 @@ ButtonShift = 1Joy5
 
 AltFlag = 0
 
+; Origin Position before WASD
+OriginX = 0
+OriginY = 0
+
 ; END OF CONFIG SECTION -- Don't change anything below this point unless you want
 ; to alter the basic nature of the script.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -251,6 +255,8 @@ if MouseNeedsToBeMoved
 {
 	SetMouseDelay, -1  ; Makes movement smoother.
 	MouseMove, DeltaX * JoyMultiplier, DeltaY * YAxisMultiplier * JoyMultiplier, 0, R
+
+    MouseGetPos, originX, originY
 }
 return
 
@@ -332,6 +338,7 @@ WatchLeftJoystick:
     DeltaY := -1
   Else
     DeltaY = 0
+
   if not (DeltaX = 0 and DeltaY = 0)
   {
     x_axis := x_axis_centre + DeltaX*unit_x
@@ -339,6 +346,8 @@ WatchLeftJoystick:
     Click down %x_axis% %y_axis%
     Click up
   }
+  else if (DeltaX = 0 and DeltaY = 0)
+    MouseMove, originX, originY
 
   Return
 
