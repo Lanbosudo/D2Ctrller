@@ -107,10 +107,11 @@ CheckWindow()
 ButtonLeft:
 
   window := CheckWindow()
-  if (window = 2)
+  if not (window = 0)
   {
     SetTimer, WaitForEscapePair, 10
-    Return
+    if (window = 2)
+      Return
   }
 
 SetMouseDelay, -1  ; Makes movement smoother.
