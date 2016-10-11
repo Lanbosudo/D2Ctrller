@@ -134,6 +134,11 @@ WaitForEscapePair:
   
   if GetKeyState(JoystickPrefix . ButtonRight)
   {
+    Send {Alt Down}
+    Sleep, 100
+    Send {Tab}
+    Send {Alt Up}
+
     Send {LWin Down}
     Send {LCtrl Down}
     Sleep, 100
