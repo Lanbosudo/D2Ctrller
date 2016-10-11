@@ -388,6 +388,13 @@ Return
   if (window = 2)
   Return
 
+  if (window = 1) ; Disable Alt-Esc in Diablo
+  {
+    AltStatus := GetKeyState("Alt")
+    if (AltStatus = 1)
+    Return
+  }
+  
   Send {Esc}
   Return
 
@@ -423,6 +430,13 @@ Return
   window := CheckWindow()
   if (window = 2)
     Return
+  
+  if (window = 1) ; Disable Alt-Tab in Diablo
+  {
+    AltStatus := GetKeyState("Alt")
+    if (AltStatus = 1)
+    Return
+  }
 
   Send {Tab}
   Return
