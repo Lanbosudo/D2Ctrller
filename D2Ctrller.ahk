@@ -101,7 +101,8 @@ CheckWindow()
        or InStr(processName, "NFS")
        or InStr(processName, "Borderlands")
        or InStr(processName, "hl2")
-       or InStr(processName, "kawaks"))
+       or InStr(processName, "kawaks")
+       or InStr(processName, "FEZ"))
     WindowFlag = 2 ; Steam Big Picture Mode / Game controller mode
   else
     WindowFlag = 0 ; Desktop Mode
