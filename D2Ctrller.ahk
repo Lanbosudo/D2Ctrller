@@ -199,7 +199,7 @@ else if JoyPOV between 13500 and 22500  ; Back
 	Send {WheelDown}
 else if JoyPOV between 4501 and 13500 ; Right
 {
-    Send {T}{Click right}
+    Send {F11}{Click right}
     WinGetPos,,, total_width, total_height, A
     x_axis := round(total_width*0.48)
     y_axis := round(total_height*0.44)
