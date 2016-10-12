@@ -384,20 +384,26 @@ Return
 1Joy2::
 
   window := CheckWindow()
-  if not (window = 1)
-  Return
+  if (window = 0)
+  {
+    Send {Enter}
+    Return
+  }
 
-Send {2}
-Return
+  Send {2}
+  Return
 
 1Joy3::
 
   window := CheckWindow()
-  if not (window = 1)
-  Return
+  if (window = 0)
+  {
+    Send {Space}
+    Return
+  }  
 
-Send {3}
-Return
+  Send {3}
+  Return
 
 1Joy4::
 
