@@ -74,6 +74,8 @@ IfInString, JoyInfo, P  ; Joystick has POV control, so use it as a mouse wheel.
 
 SetTimer, WatchLeftJoystick, 10 ; Monitor left wheel
 
+SetTimer, WatchGameControllerConnection, 1000
+
 return  ; End of auto-execute section.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -108,6 +110,15 @@ CheckWindow()
     WindowFlag = 0 ; Desktop Mode
   Return WindowFlag
 }
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+WatchGameControllerConnection:
+  GetKeyState, joyx, 1JoyX
+  if joyx <>
+    Return
+  MsgBox No controller detected
+  ExitApp
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ButtonLeft:
 
