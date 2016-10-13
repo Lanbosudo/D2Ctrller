@@ -283,9 +283,16 @@ GetKeyState, JoyPOV, %JoystickNumber%JoyPOV
 if JoyPOV = -1  ; No angle.
 	return
 if (JoyPOV > 31500 or JoyPOV < 4500)  ; Forward
-  Send {Up}
+  if (window = 0)
+    Send {Up}
+  else
+    Send {WheelUp}
 else if JoyPOV between 13500 and 22500  ; Back
-  Send {Down}
+  if (window = 0)
+    Send {Down}
+  else
+    Send {WheelDown}
+
 else if JoyPOV between 4501 and 13500 ; Right
 {
 
