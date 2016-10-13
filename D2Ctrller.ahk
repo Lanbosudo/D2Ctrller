@@ -119,12 +119,9 @@ WatchGameControllerConnection:
 ButtonLeft:
 
   window := CheckWindow()
-  if not (window = 0)
-  {
-    SetTimer, WaitForEscapePair, 10
-    if (window = 2)
-      Return
-  }
+  SetTimer, WaitForEscapePair, 10
+  if (window = 2)
+    Return
 
 SetMouseDelay, -1  ; Makes movement smoother.
 MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
