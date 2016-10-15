@@ -107,6 +107,29 @@ CheckWindow()
   Return WindowFlag
 }
 
+SearchEmpty(isLeft, mode, ByRef Px, ByRef Py) ; mouse is left or not
+                          ; mode1: search for empty; mode2: search for green position
+{
+    if (mode = 1)
+    {
+        if (isLeft = false)
+            ImageSearch, Px, Py, 207, 221, 1011, 1137, *80 Empty2.PNG
+            ;207, ..., 1137: Left Screen positions
+            ;*200: Set big variation for empty recognition
+        else
+            ImageSearch, Px, Py, 1024, 834, 1788, 1167, *80 Empty2.PNG
+    }
+    else
+    {
+        if (isLeft = true)
+            ImageSearch, Px, Py, 207, 221, 1011, 1137, *10 GreenRect1.PNG
+            ;*10: Found by testing
+        else
+            ImageSearch, Px, Py, 1024, 834, 1788, 1167, *10 GreenRect1.PNG
+    }
+    Return ErrorLevel
+}
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 WatchGameControllerConnection:
     GetKeyState, joyx, 1JoyX
@@ -118,15 +141,59 @@ WatchGameControllerConnection:
 
 ButtonLeft:
 
-  window := CheckWindow()
-  SetTimer, WaitForEscapePair, 10
-  if (window = 2)
-    Return
+    window := CheckWindow()
+    if GetKeyState(ButtonControl)
+    {
+        MouseGetPos, mouseX
+        isOne_One := SearchEmpty(mouseX < 1011, 2, Px, Py) ;ErrorLevel: 1 -> 1*1; ErrorLevel: 0 -> larger
 
-SetMouseDelay, -1  ; Makes movement smoother.
-MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
-SetTimer, WaitForLeftButtonUp, 10
-return
+        SearchEmpty(mouseX < 1011, 1, Px, Py)
+
+        Sleep, 200
+        Click
+        Px := Px+33
+        Py := Py+33
+        MouseMove, %Px%, %Py%
+
+        if (isOne_One = 1)
+        {
+            Click
+            Return
+        }
+        
+        mouseX := Px
+        isNotFit := SearchEmpty(mouseX < 1011, 2, Px, Py)
+
+        if (isNotFit = 0)
+        {
+            Click
+            Return
+        }
+        Loop, 7  ; 8 lines in Inventory
+        {
+            MouseGetPos,, mouseY
+            if (mouseY > 1167)
+                break
+            MouseMove, 0, 70, 0, R
+            isNotFit := SearchEmpty(mouseX < 1011, 2, Px, Py)
+            if (isNotFit = 0)
+            {
+                Click
+                Return
+            }
+        }
+
+        Return
+    }
+    
+    SetTimer, WaitForEscapePair, 10
+    if (window = 2)
+        Return
+
+    SetMouseDelay, -1  ; Makes movement smoother.
+    MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
+    SetTimer, WaitForLeftButtonUp, 10
+    Return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; "Escape" function for games
@@ -188,13 +255,13 @@ return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ButtonControl:
 
-  window := CheckWindow()
-  if (window = 2)
-  Return
+    window := CheckWindow()
+    if (window = 2)
+        Return
 
-Send {Control Down}
-SetTimer, WaitForControlUp, 10
-return
+    Send {Control Down}
+    SetTimer, WaitForControlUp, 10
+    Return
 
 WaitForControlUp:
   if GetKeyState(ButtonControl)
@@ -479,3 +546,12 @@ Return
 
   Send {Tab}
   Return
+
+F10::
+    MouseGetPos, mouseX
+    if (mouseX < 1011)
+        ImageSearch, Px, Py, 207, 221, 1011, 1137, *10 GreenRect1.PNG
+    else
+        ImageSearch, Px, Py, 1024, 834, 1788, 1167, *10 GreenRect1.PNG
+    MsgBox %errorlevel%
+    Return
