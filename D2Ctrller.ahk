@@ -283,29 +283,40 @@ GetKeyState, JoyPOV, %JoystickNumber%JoyPOV
 if JoyPOV = -1  ; No angle.
 	return
 if (JoyPOV > 31500 or JoyPOV < 4500)  ; Forward
-	Send {WheelUp}
+  Send {Up}
 else if JoyPOV between 13500 and 22500  ; Back
-	Send {WheelDown}
+  Send {Down}
 else if JoyPOV between 4501 and 13500 ; Right
 {
 
   window := CheckWindow()
-  if not (window = 1)
-  Return
+  if (window = 2)
+    Return
+  else if (window = 0)
+  {
+    Send {Right}
+    Return
+  }
+  
+  Send {F11}{Click right}
+  WinGetPos,,, total_width, total_height, A
+  x_axis := round(total_width*0.48)
+  y_axis := round(total_height*0.44)
+  MouseMove, %x_axis%, %y_axis%  ; move cursor on the portal
+  Sleep, 1200
+  Click
+}
 
-    Send {F11}{Click right}
-    WinGetPos,,, total_width, total_height, A
-    x_axis := round(total_width*0.48)
-    y_axis := round(total_height*0.44)
-    MouseMove, %x_axis%, %y_axis%  ; move cursor on the portal
-    Sleep, 1200
-    Click
-    }
 else ; Left
 {
   window := CheckWindow()
-  if not (window = 1)
-  Return
+  if (window = 2)
+    Return
+  else if (window = 0)
+  {
+    Send {Left}
+    Return
+  }
 
   Send {I}
 }
