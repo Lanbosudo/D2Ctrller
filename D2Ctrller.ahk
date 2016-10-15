@@ -293,14 +293,14 @@ else if JoyPOV between 4501 and 13500 ; Right
   if not (window = 1)
   Return
 
-  Send {T}{Click right}
-  WinGetPos,,, total_width, total_height, A
-  x_axis := round(total_width*0.48)
-  y_axis := round(total_height*0.44)
-  MouseMove, %x_axis%, %y_axis%  ; move cursor on the portal
-  Sleep, 1200
-  Click
-}
+    Send {F11}{Click right}
+    WinGetPos,,, total_width, total_height, A
+    x_axis := round(total_width*0.48)
+    y_axis := round(total_height*0.44)
+    MouseMove, %x_axis%, %y_axis%  ; move cursor on the portal
+    Sleep, 1200
+    Click
+    }
 else ; Left
 {
   window := CheckWindow()
