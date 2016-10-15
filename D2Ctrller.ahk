@@ -113,11 +113,11 @@ CheckWindow()
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 WatchGameControllerConnection:
-  GetKeyState, joyx, 1JoyX
-  if joyx <>
-    Return
-  MsgBox No controller detected
-  ExitApp
+    GetKeyState, joyx, 1JoyX
+    if joyx <>
+        Return
+    TrayTip, Controller Connection Monitor, No Contoller Connected,, 2
+    ExitApp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ButtonLeft:
